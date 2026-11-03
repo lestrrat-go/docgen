@@ -59,7 +59,7 @@ func Run(ctx context.Context, args []string, stdout, stderr io.Writer) int {
 	if err := fs.Parse(args); err != nil {
 		if errors.Is(err, flag.ErrHelp) {
 			fs.SetOutput(stderr)
-			fmt.Fprintln(stderr, "Usage: docgen [flags]")
+			_, _ = fmt.Fprintln(stderr, "Usage: docgen [flags]")
 			fs.PrintDefaults()
 			return ExitOK
 		}
@@ -70,7 +70,7 @@ func Run(ctx context.Context, args []string, stdout, stderr io.Writer) int {
 	}
 
 	if opts.version {
-		fmt.Fprintf(stdout, "docgen %s\n", version())
+		_, _ = fmt.Fprintf(stdout, "docgen %s\n", version())
 		return ExitOK
 	}
 
@@ -131,7 +131,7 @@ func Run(ctx context.Context, args []string, stdout, stderr io.Writer) int {
 	if opts.check {
 		paths := plan.Paths()
 		for _, p := range paths {
-			fmt.Fprintln(stdout, filepath.ToSlash(filepath.Join(opts.out, p)))
+			_, _ = fmt.Fprintln(stdout, filepath.ToSlash(filepath.Join(opts.out, p)))
 		}
 		if len(paths) > 0 {
 			return ExitDiff
@@ -160,7 +160,7 @@ func (o *options) validate() error {
 // fail prints err to stderr with the diagnostic prefix on every line and returns ExitError.
 func fail(stderr io.Writer, err error) int {
 	for line := range strings.SplitSeq(err.Error(), "\n") {
-		fmt.Fprintf(stderr, "docgen: %s\n", line)
+		_, _ = fmt.Fprintf(stderr, "docgen: %s\n", line)
 	}
 	return ExitError
 }

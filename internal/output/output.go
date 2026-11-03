@@ -140,11 +140,11 @@ func writeFile(target string, content []byte) error {
 	renamed := false
 	defer func() {
 		if !renamed {
-			os.Remove(tmp.Name())
+			_ = os.Remove(tmp.Name())
 		}
 	}()
 	if _, err := tmp.Write(content); err != nil {
-		tmp.Close()
+		_ = tmp.Close()
 		return fmt.Errorf("write %s: %w", target, err)
 	}
 	if err := tmp.Close(); err != nil {
